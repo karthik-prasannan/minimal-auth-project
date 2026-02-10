@@ -6,13 +6,10 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to read form data
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// Serve static files from public folder
 app.use(express.static("public"));
 
-// Session setup
 app.use(
   session({
     secret: "supersecretkey",
@@ -27,12 +24,12 @@ const USER = {
   password: "123456",
 };
 
-// Show login page
+// Login page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
-// Handle login
+// Login handler
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -48,18 +45,18 @@ app.post("/login", (req, res) => {
   }
 });
 
-
 // Protected dashboard
 app.get("/dashboard", (req, res) => {
   if (!req.session.user) {
     return res.redirect("/");
   }
- res.send(`
-  <h2>Welcome to Dashboard</h2>
-  <p>Logged in as: ${req.session.user}</p>
-  <a href="/logout">Logout</a>
-`);
 
+  res.send(`
+    <h2>Welcome to Dashboard</h2>
+    <p>Logged in as: ${req.session.user}</p>
+    <a href="/logout">Logout</a>
+  `);
+});
 
 // Logout
 app.get("/logout", (req, res) => {
@@ -70,5 +67,5 @@ app.get("/logout", (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
