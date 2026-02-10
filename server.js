@@ -40,9 +40,9 @@ app.post("/login", (req, res) => {
   if (email === USER.email && password === USER.password) {
     req.session.user = email;
     return res.redirect("/dashboard");
-  } else {
-    return res.redirect("/?error=Invalid credentials");
   }
+
+  return res.redirect("/?error=Invalid credentials");
 });
 
 // Protected dashboard
